@@ -12,12 +12,18 @@ fn main() {
     println!("Result: {}", expression);
 }
 
+/// Check if a given expression contains only valid characters (digits, operators, and parentheses).
 fn is_valid_expression(expression: &str) -> bool {
     // Define a regular expression pattern to match valid characters in the expression.
     let pattern = regex::Regex::new(r"^[0-9()+\-*/\s]*$").unwrap();
 
     // Use the regex pattern to check if the expression contains only valid characters.
     pattern.is_match(expression)
+}
+
+/// Evaluate a mathematical expression in postfix notation (RPN).
+fn evaluate_expression(expression: &str) -> f64 {
+    0.0
 }
 
 #[cfg(test)]
