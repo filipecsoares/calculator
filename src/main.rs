@@ -21,9 +21,31 @@ fn is_valid_expression(expression: &str) -> bool {
     pattern.is_match(expression)
 }
 
-/// Evaluate a mathematical expression in postfix notation (RPN).
+/// Evaluate a mathematical expression in postfix notation (RPN - Reverse Polish Notation).
 fn evaluate_expression(expression: &str) -> f64 {
-    0.0
+    let mut values = Vec::new(); // Stack to store numbers
+    //let mut operators = Vec::new(); // Stack to store operators
+
+    let mut i = 0; // Index of the current character in the expression
+    while i < expression.len() {
+        match expression.chars().nth(i).unwrap() {
+            '0'..='9' => {
+                // Parse and push numbers onto the values stack
+                let mut j = i;
+                while j < expression.len() && expression.chars().nth(j).unwrap().is_digit(10) {
+                    j+=1;
+                }
+                let number: f64 = expression[i..j].parse().expect("Invalid number");
+                values.push(number);
+                i = j;
+            }
+            _ => {
+                panic!("Invalid character in expression.");
+            }
+        }
+    }
+    
+    values.pop().expect("Invalid expression") // The final number is the result
 }
 
 #[cfg(test)]
