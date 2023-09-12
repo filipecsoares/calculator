@@ -6,7 +6,7 @@ Calculator project developed to practice Rust and Math.
 
 ### Input Validation
 
-The calculator first checks if the entered expression contains only valid characters. Valid characters include digits, basic arithmetic operators (+, -, *, /), and parentheses. Any other characters are considered invalid.
+The calculator first checks if the entered expression contains only valid characters. Valid characters include digits, basic arithmetic operators (+, -, *, /, ^), and parentheses. Any other characters are considered invalid.
 
 ### Shunting Yard Algorithm
 
