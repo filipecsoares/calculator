@@ -40,7 +40,7 @@ fn evaluate_expression(expression: &str) -> f64 {
                 values.push(number);
                 i = j;
             }
-            '+' | '-' | '*' | '/' => {
+            '+' | '-' | '*' | '/' | '^' => {
                 // Handle operators based on precedence and associativity
                 while let Some(op) = operators.last() {
                     if *op != '(' && precedence(*op) >= precedence(expression.chars().nth(i).unwrap()) {
@@ -90,6 +90,7 @@ fn precedence(operator: char) -> usize {
     match operator {
         '+' | '-' => 1,
         '*' | '/' => 2,
+        '^' => 3,
         _ => 0, // Default precedence for other characters (e.g., parentheses)
     }
 }
@@ -103,6 +104,7 @@ fn apply_operator(values: &mut Vec<f64>, operator: char) {
         '-' => a - b,
         '*' => a * b,
         '/' => a / b,
+        '^' => a.powf(b),
         _ => panic!("Invalid operator"),
     };
     values.push(result);
@@ -163,5 +165,11 @@ mod tests {
         assert_eq!(evaluate_expression("1 + 2"), 3.);
         assert_eq!(evaluate_expression("1 + 2 * 3"), 7.);
         assert_eq!(evaluate_expression("1 - 1"), 0.);
+    }
+
+    #[test]
+    fn test_evaluate_expression_with_power() {
+        assert_eq!(evaluate_expression("1 + 2 ^ 3"), 9.);
+        assert_eq!(evaluate_expression("1 + 2 ^ 3 * 4"), 33.);
     }
 }
