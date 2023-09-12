@@ -68,6 +68,9 @@ fn evaluate_expression(expression: &str) -> f64 {
                 operators.pop(); // Pop the '('
                 i += 1;
             }
+            ' ' => {
+                i += 1; // Skip whitespace
+            }
             _ => {
                 panic!("Invalid character in expression.");
             }
@@ -153,5 +156,12 @@ mod tests {
         assert_eq!(evaluate_expression("1+(2*3)"), 7.);
         assert_eq!(evaluate_expression("1+2*(2+2)"), 9.);
         assert_eq!(evaluate_expression("(1+2)/2"), 1.5);
+    }
+
+    #[test]
+    fn test_evaluate_expression_with_spaces() {
+        assert_eq!(evaluate_expression("1 + 2"), 3.);
+        assert_eq!(evaluate_expression("1 + 2 * 3"), 7.);
+        assert_eq!(evaluate_expression("1 - 1"), 0.);
     }
 }
