@@ -9,6 +9,7 @@ fn main() {
         println!("Invalid expression!");
         return
     }
+    let expression = evaluate_expression(&expression);
     println!("Result: {}", expression);
 }
 
@@ -49,6 +50,22 @@ fn evaluate_expression(expression: &str) -> f64 {
                     }
                 }
                 operators.push(expression.chars().nth(i).unwrap());
+                i += 1;
+            }
+            '(' => {
+                // Push opening parentheses onto the operators stack
+                operators.push('(');
+                i += 1;
+            }
+            ')' => {
+                // Handle closing parentheses and apply operators
+                while let Some(op) = operators.last() {
+                    if *op == '(' {
+                        break;
+                    }
+                    apply_operator(&mut values, operators.pop().unwrap());
+                }
+                operators.pop(); // Pop the '('
                 i += 1;
             }
             _ => {
@@ -110,5 +127,31 @@ mod tests {
         assert_eq!(evaluate_expression("1+2"), 3.);
         assert_eq!(evaluate_expression("1+2*3"), 7.);
         assert_eq!(evaluate_expression("1-1"), 0.);
+    }
+
+    #[test]
+    fn test_precedence() {
+        assert_eq!(precedence('+'), 1);
+        assert_eq!(precedence('-'), 1);
+        assert_eq!(precedence('*'), 2);
+        assert_eq!(precedence('/'), 2);
+        assert_eq!(precedence('('), 0);
+    }
+
+    #[test]
+    fn test_apply_operator() {
+        let mut values = Vec::new();
+        values.push(1.);
+        values.push(2.);
+        apply_operator(&mut values, '+');
+        assert_eq!(values, [3.]);
+    }
+
+    #[test]
+    fn test_evaluate_expression_with_parentheses() {
+        assert_eq!(evaluate_expression("(1+2)*3"), 9.);
+        assert_eq!(evaluate_expression("1+(2*3)"), 7.);
+        assert_eq!(evaluate_expression("1+2*(2+2)"), 9.);
+        assert_eq!(evaluate_expression("(1+2)/2"), 1.5);
     }
 }
